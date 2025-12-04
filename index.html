@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgebots Dino Game - Exhibition 2025</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header-logos">
+            <img src="assets/forgebots-logo.png" alt="Forgebots" class="logo forgebots-logo">
+            <div class="title-section">
+                <h1>🦖 Dino Jump Game</h1>
+                <h2>Robotics • AI • IoT</h2>
+            </div>
+            <img src="assets/exhibition-logo.png" alt="Exhibition 2025" class="logo exhibition-logo">
+        </div>
+        
+        <canvas id="gameCanvas" width="800" height="300"></canvas>
+        
+        <div class="score-display">
+            <span>Score: <span id="score">0</span></span>
+            <span>High Score: <span id="highScore">0</span></span>
+        </div>
+        
+        <div class="controls-info">
+            <p><strong>Controls:</strong></p>
+            <p>⬆️ <kbd>SPACE</kbd> or <kbd>↑</kbd> - Jump</p>
+            <p>⬇️ <kbd>↓</kbd> - Duck</p>
+            <p>🔄 <kbd>R</kbd> - Restart</p>
+        </div>
+        
+        <div class="game-status" id="gameStatus">
+            Press SPACE to Start!
+        </div>
+
+        <!-- This section will show camera input status when implemented -->
+        <div class="camera-status" id="cameraStatus">
+            <p>🎥 Camera Mode: <span id="cameraMode">Disabled</span></p>
+        </div>
+
+        <div class="footer-brand">
+            <span>FORGEBOTS</span> • UM6P Robotics, AI & IoT Club • Exhibition 2025
+        </div>
+    </div>
+
+    <!-- Game Scripts - Organized for easy modification -->
+    <script src="js/config.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/obstacles.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
