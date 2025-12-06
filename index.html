@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgebots Dino Game - Exhibition 2025</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- MediaPipe Pose Detection -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="game-container">
@@ -35,9 +40,36 @@
             Press SPACE to Start!
         </div>
 
-        <!-- This section will show camera input status when implemented -->
-        <div class="camera-status" id="cameraStatus">
-            <p>🎥 Camera Mode: <span id="cameraMode">Disabled</span></p>
+        <!-- Camera Controls and Preview -->
+        <div class="camera-container" id="cameraContainer">
+            <div class="camera-header">
+                <h3>🎥 Camera Controls</h3>
+                <div class="camera-status" id="cameraStatus">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="cameraMode">Disabled</span>
+                </div>
+            </div>
+            
+            <div class="camera-preview">
+                <video id="cameraVideo" autoplay playsinline></video>
+                <canvas id="poseCanvas"></canvas>
+            </div>
+            
+            <div class="camera-controls">
+                <button id="enableCameraBtn" class="control-btn primary">Enable Camera</button>
+                <button id="calibrateBtn" class="control-btn" disabled>Calibrate Standing Position</button>
+                <button id="disableCameraBtn" class="control-btn" disabled>Disable Camera</button>
+            </div>
+            
+            <div class="camera-instructions" id="cameraInstructions">
+                <p><strong>How to play with camera:</strong></p>
+                <ol>
+                    <li>Click "Enable Camera" and allow camera access</li>
+                    <li>Stand in view and click "Calibrate Standing Position"</li>
+                    <li>Jump in real life to make the dino jump!</li>
+                    <li>Duck down to make the dino duck!</li>
+                </ol>
+            </div>
         </div>
 
         <div class="footer-brand">
@@ -49,6 +81,7 @@
     <script src="js/config.js"></script>
     <script src="js/player.js"></script>
     <script src="js/obstacles.js"></script>
+    <script src="camera/cameraHandler.js"></script>
     <script src="js/input.js"></script>
     <script src="js/game.js"></script>
     <script src="js/main.js"></script>

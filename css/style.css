@@ -129,13 +129,145 @@ kbd {
     background: rgba(255, 107, 0, 0.1);
     border-radius: 5px;
     border: 1px solid #FF8C00;
-    display: none; /* Hidden by default, show when camera is available */
 }
 
 .camera-status.active {
     background: rgba(255, 165, 0, 0.2);
     border-color: #FFA500;
+}
+
+/* Camera Container Styles */
+.camera-container {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 2px solid rgba(255, 107, 0, 0.3);
+}
+
+.camera-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.camera-header h3 {
+    color: #FF6B00;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.camera-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 107, 0, 0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #FF8C00;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #888;
+    animation: none;
+}
+
+.status-dot.active {
+    background: #00FF00;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.camera-preview {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 15px;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #FF6B00;
+}
+
+#cameraVideo {
+    display: none; /* Hidden, we show the canvas instead */
+}
+
+#poseCanvas {
+    width: 100%;
+    height: auto;
     display: block;
+}
+
+.camera-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.control-btn {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid #FF8C00;
+    border-radius: 8px;
+    background: rgba(255, 140, 0, 0.2);
+    color: #FFA500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover:not(:disabled) {
+    background: rgba(255, 140, 0, 0.4);
+    border-color: #FFA500;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 107, 0, 0.3);
+}
+
+.control-btn.primary {
+    background: linear-gradient(145deg, #FF8C00, #FF6B00);
+    color: #fff;
+    border-color: #FFA500;
+}
+
+.control-btn.primary:hover:not(:disabled) {
+    background: linear-gradient(145deg, #FFA500, #FF8C00);
+}
+
+.control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.camera-instructions {
+    background: rgba(255, 107, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 107, 0, 0.3);
+    text-align: left;
+}
+
+.camera-instructions p {
+    margin-bottom: 10px;
+}
+
+.camera-instructions ol {
+    margin-left: 20px;
+    color: #ddd;
+}
+
+.camera-instructions li {
+    margin-bottom: 5px;
 }
 
 /* Game Over Overlay Style */

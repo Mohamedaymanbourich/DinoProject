@@ -13,18 +13,27 @@ For the Exhibition event, we're creating an interactive game where:
 - The player **physically ducks** → dinosaur ducks under birds
 - A camera detects the player's movements in real-time
 
-**Current Status:** ✅ Keyboard controls working | 🔄 Camera integration pending
+**Current Status:** ✅ Keyboard controls working | ✅ Camera integration COMPLETE!
 
 ---
 
-## 🎮 How to Play (Current Version)
+## 🎮 How to Play
 
+### Keyboard Controls (Traditional)
 1. Open `index.html` in any browser (Chrome recommended)
 2. Press **SPACE** to start
 3. Controls:
    - `SPACE` or `↑` → Jump
    - `↓` → Duck  
    - `R` → Restart
+
+### 🎥 Camera Controls (NEW!)
+1. Open `index.html` in a browser
+2. Click **"Enable Camera"** button
+3. Allow camera access when prompted
+4. Stand in view and click **"Calibrate Standing Position"**
+5. **Jump in real life** to make the dino jump!
+6. **Duck down** to make the dino duck!
 
 ---
 
@@ -46,8 +55,8 @@ DinoProject/
 │   ├── game.js             # 🎯 Game loop, collision, scoring
 │   └── main.js             # 🚀 Starts everything
 │
-├── camera/                 # 📷 CAMERA STUFF (TO BE IMPLEMENTED)
-│   └── cameraHandler.js    # Template ready for pose detection
+├── camera/                 # 📷 CAMERA INTEGRATION (✅ IMPLEMENTED!)
+│   └── cameraHandler.js    # MediaPipe Pose detection - COMPLETE!
 │
 ├── assets/                 # 🖼️ Images
 │   ├── forgebots-logo.png  # Add the orange robot logo here
@@ -67,6 +76,9 @@ DinoProject/
 | Cactus obstacles (jump over) | ✅ Done | `obstacles.js` |
 | Bird obstacles (duck under) | ✅ Done | `obstacles.js` |
 | Keyboard controls | ✅ Done | `input.js` |
+| **Camera-based jump detection** | ✅ Done | `cameraHandler.js` |
+| **MediaPipe Pose integration** | ✅ Done | `cameraHandler.js` |
+| **Real-time pose tracking** | ✅ Done | `cameraHandler.js` |
 | Score & high score | ✅ Done | `game.js` |
 | Game over & restart | ✅ Done | `game.js` |
 | Speed adjustment | ✅ Done | `config.js` |
@@ -77,26 +89,31 @@ DinoProject/
 
 ## 🔄 What's LEFT TO DO
 
-### Priority 1: Camera Integration 📷
-**Files to modify:** `camera/cameraHandler.js`, `js/input.js`
+### Priority 1: Polish for Exhibition
+| Task | Difficulty | Status |
+|------|------------|--------|
+| Add Forgebots logo images | Easy | Pending |
+| Add sound effects | Easy | Pending |
+| Test with actual jumping | Medium | Ready to test! |
+| Fine-tune detection thresholds | Medium | Adjustable in code |
 
-| Task | Difficulty | Notes |
-|------|------------|-------|
-| Set up webcam access | Easy | Use `navigator.mediaDevices.getUserMedia` |
-| Add pose detection library | Easy | PoseNet or MediaPipe |
-| Detect player head position | Medium | Track Y coordinate of nose/head |
-| Calibrate standing position | Medium | Save baseline when player stands |
-| Trigger jump when head goes UP | Medium | Call `inputHandler.triggerJump()` |
-| Trigger duck when head goes DOWN | Medium | Call `inputHandler.triggerDuck()` |
+### Camera Integration Details ✅
 
-### Priority 2: Polish for Exhibition
-| Task | Difficulty |
-|------|------------|
-| Add Forgebots logo images | Easy |
-| Add sound effects | Easy |
-| Add countdown before start | Easy |
-| Test with actual jumping | Medium |
-| Adjust detection thresholds | Medium |
+The camera system is **fully implemented** using MediaPipe Pose:
+- ✅ Webcam access and video feed
+- ✅ Real-time pose detection (33 body landmarks)
+- ✅ Shoulder position tracking for jump/duck detection
+- ✅ Calibration system for different player heights
+- ✅ Position smoothing to reduce jitter
+- ✅ Visual feedback with pose overlay
+- ✅ UI controls (Enable/Disable/Calibrate)
+
+**How it works:**
+1. MediaPipe detects your body pose in real-time
+2. System tracks shoulder position (landmarks 11 & 12)
+3. When you jump, shoulders move up → triggers dino jump
+4. When you duck, shoulders move down → triggers dino duck
+5. Automatic smoothing prevents false triggers
 
 ---
 
@@ -121,32 +138,37 @@ CONFIG.OBSTACLES.MAX_GAP = 600;  // Maximum space between obstacles
 
 ---
 
-## 📷 How to Add Camera Controls
+## 📷 Camera Controls - User Guide
 
-### Step 1: Add a pose detection library
-In `index.html`, add before the game scripts:
-```html
-<!-- Using TensorFlow.js + MoveNet (recommended) -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
-```
+### Setup Requirements:
+- Modern web browser (Chrome, Edge, or Firefox recommended)
+- Working webcam
+- Good lighting conditions
+- Stable internet connection (for MediaPipe library)
 
-### Step 2: Implement the camera handler
-Edit `camera/cameraHandler.js`:
-- The template is already there with comments
-- Implement `getHeadPosition()` using your chosen library
-- Adjust `JUMP_THRESHOLD` and `DUCK_THRESHOLD` (default: 50 pixels)
+### Best Practices:
+1. **Lighting**: Ensure you're well-lit so the camera can see you
+2. **Distance**: Stand 1-2 meters from the camera
+3. **Framing**: Make sure your shoulders and head are visible
+4. **Calibration**: Stand still and upright when calibrating
+5. **Movement**: Make clear, distinct jumps for best detection
 
-### Step 3: Connect camera to game
-In `js/input.js`, uncomment `this.initCameraControls()` in the constructor.
+### Adjusting Sensitivity:
+Edit `camera/cameraHandler.js` to change detection thresholds:
 
-### Key Functions to Use:
 ```javascript
-// These are already set up - just call them!
-game.getInputHandler().triggerJump();    // When player jumps
-game.getInputHandler().triggerDuck();    // When player ducks
-game.getInputHandler().triggerStandUp(); // When player stands back up
+// Default: 0.08 (8% vertical movement)
+this.JUMP_THRESHOLD = 0.08;   // Lower = more sensitive jumps
+this.DUCK_THRESHOLD = 0.08;   // Lower = more sensitive ducks
+this.historySize = 3;         // Smoothing (higher = smoother but slower)
 ```
+
+### Technical Details:
+- **Library**: MediaPipe Pose (Google)
+- **Detection**: 33 body landmarks at 30+ FPS
+- **Tracking**: Shoulder position (landmarks 11 & 12)
+- **Coordinates**: Normalized (0-1) for resolution independence
+- **Smoothing**: 3-frame moving average
 
 ---
 
@@ -169,17 +191,28 @@ game.getInputHandler().triggerStandUp(); // When player stands back up
 ## 📱 For the Exhibition Stand
 
 ### Setup Checklist:
+- [x] Camera integration complete
 - [ ] Laptop with webcam (or external camera)
 - [ ] Large screen/monitor for game display
+- [x] Camera UI with preview and controls
 - [ ] Good lighting (important for pose detection!)
-- [ ] Tape on floor to mark player position
-- [ ] Backup keyboard controls ready
+- [ ] Tape on floor to mark player position (1-2m from camera)
+- [x] Keyboard controls as backup
 
-### Testing Tips:
-1. Test with different heights (short & tall players)
-2. Adjust camera angle - chest height works best
-3. Test in the actual exhibition lighting
-4. Have a calibration step before each player
+### Camera Testing Tips:
+1. ✅ Test camera permissions in your browser first
+2. ✅ Ensure pose landmarks appear on video preview
+3. ✅ Calibrate while standing normally (not jumping)
+4. ✅ Test with different player heights
+5. ✅ Verify lighting - green skeleton should be clearly visible
+6. ✅ Adjust thresholds if needed (see code comments)
+
+### Live Demo Tips:
+- Show the camera preview to players so they can see the pose detection
+- Do a quick calibration for each new player
+- Remind players to make BIG jumps for better detection
+- Keep the camera at chest height for best results
+- Have keyboard controls ready as backup
 
 ---
 
@@ -193,6 +226,22 @@ Made for **Exhibition 2025** 🎉
 
 ## 💬 Questions?
 
-If something isn't clear, check the comments in each file - especially:
-- `js/input.js` - marked with ⭐ for camera integration points
-- `camera/cameraHandler.js` - full template with step-by-step comments
+**Camera not working?**
+- Check browser camera permissions
+- Try Chrome/Edge (best MediaPipe support)
+- Ensure HTTPS or localhost (camera requires secure context)
+- Refresh the page and try again
+
+**Detection too sensitive/not sensitive enough?**
+- Adjust `JUMP_THRESHOLD` and `DUCK_THRESHOLD` in `camera/cameraHandler.js`
+- Default is 0.08 (8% movement) - lower = more sensitive
+
+**Pose skeleton not showing?**
+- Improve lighting
+- Move closer to camera
+- Ensure upper body is fully visible
+- Check internet connection (MediaPipe loads from CDN)
+
+For code questions, check the detailed comments in:
+- `camera/cameraHandler.js` - Full MediaPipe implementation
+- `js/input.js` - Camera integration and controls
